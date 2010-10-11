@@ -12,6 +12,8 @@ class MY_Controller extends MX_Controller {
     function __construct(){
         parent::__construct();
         
+        $this->load->library('flash_message');
+        
     }
     
     /*
@@ -37,13 +39,13 @@ class MY_Controller extends MX_Controller {
 	*	to see that there are no errors on the page, and then loads the master view.  If there are errors it loads the error view.
 	*/
 	function _loadView(){
+				
+		//assumes error lib is being auto-loaded
+		$this->data['error'] = $this->error->get();
 		
-		/*
-		if($this->error['is_error']){
-			$this->addData('intendedView', $this->data['view']);
-			$this->addData('view','error');
+		if($this->flash_message->active){
+			$this->data['flash_message'] = $this->flash_message->get_list();
 		}
-		*/
 		
 		$this->firephp->log($this->data);
 		$this->load->vars($this->data);

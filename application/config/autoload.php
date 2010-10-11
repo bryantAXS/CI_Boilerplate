@@ -38,7 +38,7 @@
 |	$autoload['libraries'] = array('database', 'session', 'xmlrpc');
 */
 
-$autoload['libraries'] = array('firephp');
+$autoload['libraries'] = array('firephp','error');
 
 
 /*
@@ -50,7 +50,7 @@ $autoload['libraries'] = array('firephp');
 |	$autoload['helper'] = array('url', 'file');
 */
 
-$autoload['helper'] = array();
+$autoload['helper'] = array('url');
 
 
 /*

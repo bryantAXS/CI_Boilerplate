@@ -13,16 +13,16 @@ class Error{
 		$this->CI =& get_instance();
 	}
 	
-	function set_error($msg, $is_fatal = false, $is_priority = false){
+	function set($msg, $is_fatal = false, $is_priority = false){
 		
 		$this->is_error = true;
 		
-		$errorArr = array('msg'=>$msg);
+		$errorArr = array('msg'=>$msg, 'is_fatal'=>$is_fatal, 'is_priority'=>$is_priority);
 		
 		if($is_fatal){
 			
 			$this->is_fatal = true;
-			$this->fatal_list[] = $array
+			$this->fatal_list[] = $errorArr;
 		
 		}else if($is_priority && !$is_fatal){
 			
@@ -35,10 +35,24 @@ class Error{
 		}	
 	}
 	
-	function get_error(){
+	function get(){
 		
+		$this->set_error_list();
 		
+		if(count($this->error_list)){
+			return $this->error_list[0];
+		}else{
+			return false;
+		}
+	}
+	
+	function set_error_list(){
 		
+		$this->error_list = array_merge($this->priority_list, $this->error_list);
+		
+		if($this->is_fatal){
+			$this->error_list = array_merge($this->fatal_list, $this->error_list);
+		}
 	}
 	
 	/*
@@ -46,7 +60,7 @@ class Error{
 	*	@param1 - $msg - the message that you want displayed
 	*	@param2 - $uri - the uri that you want to redirect to go to 
 	*/
-	function _error_redirect($msg = 'You have been redirected', $uri){
+	function error_redirect($msg = 'You have been redirected', $uri){
 		
 		$tempError = array('is_error'=>1, 'msg'=>$msg);
 		$this->session->set_flashdata('error', $tempError);
@@ -58,7 +72,7 @@ class Error{
 	*	@param1 - $msg - the message that you want displayed
 	*	@param2 - $uri - the uri that you want to redirect to go to 
 	*/
-	function _success_redirect($msg = 'Success!', $uri){
+	function success_redirect($msg = 'Success!', $uri){
 		
 		$tempError = array('is_success'=>1, 'msg'=>$msg);
 		$this->session->set_flashdata('success', $tempSuccess);
